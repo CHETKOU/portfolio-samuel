@@ -1,14 +1,13 @@
 * {
-  box-sizing: border-box; /* Crucial pour que les paddings ne fassent pas déborder les boîtes */
+  box-sizing: border-box;
 }
 
 html, body {
-  overflow-x: hidden; /* Empêche le défilement horizontal */
+  overflow-x: hidden; /* Empêche tout débordement horizontal */
   width: 100%;
   margin: 0;
   padding: 0;
 }
-
 
 /* ===== THEMES ===== */
 :root{
@@ -330,37 +329,69 @@ footer{
 .fi{opacity:0;transform:translateY(24px);transition:opacity 0.6s,transform 0.6s}
 .fi.show{opacity:1;transform:none}
 
-/* RESPONSIVE 
-@media(max-width:900px){
-  .hero{grid-template-columns:1fr;padding:6rem 1.5rem 3rem}
-  .hero-right{display:none}
-  .showcase-wrap,.about-grid,.contact-card,.dash-grid{grid-template-columns:1fr}
-  .about-photo-card{position:static}
-  .srv-grid{grid-template-columns:1fr 1fr}
-  .pricing-grid,.dash-stats{grid-template-columns:1fr 1fr}
-  nav{padding:1rem 1.5rem}
-  section{padding:3.5rem 1.5rem}
-  #dashboard{padding:5rem 1.5rem 3rem}
-}
-*/
-@media(max-width:900px){
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  /* Section Hero : Empilement vertical et alignement central */
   .hero {
-    display: flex; /* Utilise Flex au lieu de Grid pour plus de contrôle mobile */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 1rem 3rem;
+    gap: 3rem;
+  }
+
+  /* Rendre le globe visible sous le texte */
+  .hero-right {
+    display: flex !important; /* Force l'affichage */
+    justify-content: center;
+    width: 100%;
+    max-width: 320px; /* Taille optimale pour mobile */
+    order: 2; /* S'assure qu'il passe après le texte */
+  }
+
+  #globe-canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Aligner la carte de contact (ton image WhatsApp) */
+  .contact-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem !important; /* Évite l'écrasement sur petit écran */
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Centrer les éléments de contact */
+  .cl {
+    display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 6rem 1.5rem 3rem;
+    width: 100%;
   }
-  .hero-right {
-    display: none !important; /* On cache le globe pour libérer de l'espace */
+
+  .clink {
+    justify-content: center;
+    width: 100%;
+    font-size: 0.9rem;
   }
-  .hero h1 {
-    font-size: 2.2rem; /* Réduit la taille pour éviter que les mots soient coupés */
-    line-height: 1.2;
+
+  /* Formulaire en pleine largeur */
+  .cf {
+    width: 100%;
+  }
+
+  .fg input, .fg select, .fg textarea {
+    width: 100% !important;
   }
 }
 
-/*
+
 @media(max-width:600px){
   .nav-links,.nav-right{display:none}
   .hamburger{display:flex}
@@ -372,23 +403,7 @@ footer{
   .slot-grid{grid-template-columns:repeat(4,1fr)}
   #theme-switcher{bottom:1rem;right:1rem}
 }
-*/
-@media(max-width:600px){
-  .contact-card, .proj-card, .card-box {
-    width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding: 1.5rem !important;
-  }
-  
-  /* On s'assure que le formulaire ne dépasse pas */
-  .cf {
-    width: 100%;
-  }
-  .fg input, .fg select, .fg textarea {
-    width: 100% !important; /* Force les champs à rester dans l'écran */
-  }
-}
+
 
 /* Custom Cursor Styles */
 
