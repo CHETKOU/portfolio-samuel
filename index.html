@@ -3,48 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Samuel-Portfolio — No-Code & Automation</title>
+<title>Samuel CHETKOU — No-Code & Automation Expert</title>
+
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<!-- Tailwind CSS CDN -->
+
+<!-- Font Awesome (vraies icônes) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     corePlugins: { preflight: false },
-    prefix: 'tw-',
+    theme: {
+      extend: {
+        screens: {
+          'xs': '400px',
+        }
+      }
+    }
   }
 </script>
-<!-- EmailJS CDN -->
+
+<!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- THEME SWITCHER -->
-<div id="theme-switcher">
+<!-- ===== THEME SWITCHER ===== -->
+<div id="theme-switcher" class="fixed bottom-8 right-8 z-50 flex flex-col items-end gap-2">
   <button class="theme-toggle-btn" onclick="toggleThemePanel()">
     <span>Theme</span>
     <div class="theme-dots">
-      <div class="tdot" style="background:#060608;border-color:#555" data-theme="dark" onclick="setTheme('dark',event)" title="Dark"></div>
-      <div class="tdot" style="background:#f8f8fc;border-color:#ccc" data-theme="white" onclick="setTheme('white',event)" title="White"></div>
-      <div class="tdot" style="background:#e84545" data-theme="red" onclick="setTheme('red',event)" title="Red"></div>
-      <div class="tdot" style="background:#3d9be9" data-theme="blue" onclick="setTheme('blue',event)" title="Blue"></div>
-      <div class="tdot" style="background:#34d87a" data-theme="green" onclick="setTheme('green',event)" title="Green"></div>
+      <div class="tdot" style="background:#060608;border-color:#555" data-theme="dark" onclick="setTheme('dark',event)"></div>
+      <div class="tdot" style="background:#f8f8fc;border-color:#ccc" data-theme="white" onclick="setTheme('white',event)"></div>
+      <div class="tdot" style="background:#e84545" data-theme="red" onclick="setTheme('red',event)"></div>
+      <div class="tdot" style="background:#3d9be9" data-theme="blue" onclick="setTheme('blue',event)"></div>
+      <div class="tdot" style="background:#34d87a" data-theme="green" onclick="setTheme('green',event)"></div>
     </div>
   </button>
   <div id="theme-panel">
     <div class="tpanel-title">Choose theme</div>
-    <div class="topt active" data-t="dark" onclick="setTheme('dark',event)"><div class="topt-swatch" style="background:#060608;border:1px solid #555"></div>Dark (default)</div>
-    <div class="topt" data-t="white" onclick="setTheme('white',event)"><div class="topt-swatch" style="background:#f8f8fc;border:1px solid #ccc"></div>White / Light</div>
+    <div class="topt active" data-t="dark" onclick="setTheme('dark',event)"><div class="topt-swatch" style="background:#060608;border:1px solid #555"></div>Dark</div>
+    <div class="topt" data-t="white" onclick="setTheme('white',event)"><div class="topt-swatch" style="background:#f8f8fc;border:1px solid #ccc"></div>White</div>
     <div class="topt" data-t="red" onclick="setTheme('red',event)"><div class="topt-swatch" style="background:#e84545"></div>Red</div>
     <div class="topt" data-t="blue" onclick="setTheme('blue',event)"><div class="topt-swatch" style="background:#3d9be9"></div>Blue</div>
     <div class="topt" data-t="green" onclick="setTheme('green',event)"><div class="topt-swatch" style="background:#34d87a"></div>Green</div>
   </div>
 </div>
 
+<!-- CV MODAL -->
+<div id="cv-modal" class="hidden fixed inset-0 z-[1000] flex items-center justify-center p-4" onclick="closeCvModal(event)">
+  <div class="cv-modal-backdrop"></div>
+  <div class="cv-modal-box" onclick="event.stopPropagation()">
+    <div class="cv-modal-title">
+      <i class="fa-solid fa-file-arrow-down"></i>
+      Télécharger mon CV
+    </div>
+    <p class="cv-modal-sub">Choisissez la version qui vous convient</p>
+    <div class="cv-modal-btns">
+      <a href="images/Cv-Samuel-FR.pdf" download class="cv-btn cv-btn-fr">
+        <span class="cv-flag">🇫🇷</span>
+        <div>
+          <div class="cv-btn-lang">Français</div>
+          <div class="cv-btn-sub">Version française</div>
+        </div>
+        <i class="fa-solid fa-download cv-dl-icon"></i>
+      </a>
+      <a href="images/Cv-Samuel-EN.pdf" download class="cv-btn cv-btn-en">
+        <span class="cv-flag">🇬🇧</span>
+        <div>
+          <div class="cv-btn-lang">English</div>
+          <div class="cv-btn-sub">English version</div>
+        </div>
+        <i class="fa-solid fa-download cv-dl-icon"></i>
+      </a>
+    </div>
+    <button onclick="closeCvModal()" class="cv-modal-close">
+      <i class="fa-solid fa-xmark"></i> Fermer
+    </button>
+  </div>
+</div>
+
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
-<!-- NAV -->
+<!-- ===== NAV ===== -->
 <nav id="main-nav">
   <div class="nav-logo"><em>•</em>SAMUEL<em>•</em></div>
   <ul class="nav-links">
@@ -57,28 +104,35 @@
   <div class="nav-right">
     <a href="#contact" class="nav-cta">Free audit</a>
   </div>
-  <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  <button class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#automation" onclick="toggleMenu()">Automation</a>
-  <a href="#services" onclick="toggleMenu()">Services</a>
-  <a href="#projects" onclick="toggleMenu()">Projects</a>
-  <a href="#pricing" onclick="toggleMenu()">Pricing</a>
-  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#automation" onclick="toggleMenu()"><i class="fa-solid fa-bolt mr-2 text-[var(--accent)]"></i>Automation</a>
+  <a href="#services" onclick="toggleMenu()"><i class="fa-solid fa-gear mr-2 text-[var(--accent)]"></i>Services</a>
+  <a href="#projects" onclick="toggleMenu()"><i class="fa-solid fa-folder-open mr-2 text-[var(--accent)]"></i>Projects</a>
+  <a href="#pricing" onclick="toggleMenu()"><i class="fa-solid fa-tag mr-2 text-[var(--accent)]"></i>Pricing</a>
+  <a href="#about" onclick="toggleMenu()"><i class="fa-solid fa-user mr-2 text-[var(--accent)]"></i>About</a>
+  <a href="#contact" onclick="toggleMenu()" class="nav-cta text-center mt-2">Free audit</a>
 </div>
 
-<!-- ========== MAIN PORTFOLIO ========== -->
+<!-- ===== MAIN ===== -->
 <div id="main-site">
 
 <!-- HERO -->
 <div class="hero">
   <div>
-    <div class="hero-badge">Available for new projects</div>
+    <div class="hero-badge">
+      <i class="fa-solid fa-circle-dot text-xs"></i>
+      Available for new projects
+    </div>
     <h1>I automate<br><span class="stroke">your chaos</span><br><span class="green">into flow.</span></h1>
     <p class="hero-desc">No-code & automation freelancer. Make.com, Zapier, N8N — I connect your apps, kill manual work, and give your team hours back every single week.</p>
     <div class="hero-btns">
-      <a href="#projects" class="btn-primary">See my work</a>
-      <a href="#contact" class="btn-ghost">Book free audit</a>
+      <a href="#projects" class="btn-primary"><i class="fa-solid fa-eye mr-2"></i>See my work</a>
+      <a href="#contact" class="btn-ghost"><i class="fa-solid fa-calendar-check mr-2"></i>Book free audit</a>
     </div>
     <div class="hero-stats">
       <div><div class="stat-num">5h+</div><div class="stat-lbl">saved / week / client</div></div>
@@ -88,15 +142,20 @@
   </div>
   <div class="hero-right">
     <div class="card-box">
-      <div class="globe-lbl">Live — Global availability</div>
+      <div class="globe-lbl"><i class="fa-solid fa-globe mr-1"></i>Live — Global availability</div>
       <canvas id="globe-canvas" width="340" height="340"></canvas>
       <div class="globe-time">
-        <div><div class="globe-clock" id="clock">--:--:--</div><div class="globe-tz" id="tz-label"></div></div>
+        <div>
+          <div class="globe-clock" id="clock">--:--:--</div>
+          <div class="globe-tz" id="tz-label"></div>
+        </div>
         <div class="globe-date" id="date-label"></div>
       </div>
     </div>
     <div class="card-box profile-row">
-      <div class="profile-avatar"><img src="images/PROFIL.jpg" alt="Samuel" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="profile-avatar">
+        <img src="images/PROFIL.jpg" alt="Samuel" style="width:100%;height:100%;object-fit:cover;">
+      </div>
       <div>
         <div class="profile-name">Samuel CHETKOU</div>
         <div class="profile-role">No-Code & Automation Expert</div>
@@ -104,12 +163,16 @@
       </div>
     </div>
     <div class="card-box">
-      <div class="globe-lbl">Tech stack</div>
+      <div class="globe-lbl"><i class="fa-solid fa-layer-group mr-1"></i>Tech stack</div>
       <div class="tools-row">
-        <span class="tool-chip">Make.com</span><span class="tool-chip">Zapier</span>
-        <span class="tool-chip">N8N</span><span class="tool-chip">Notion</span>
-        <span class="tool-chip">Airtable</span><span class="tool-chip">API/Webhook</span>
-        <span class="tool-chip">Google WS</span><span class="tool-chip">Slack</span>
+        <span class="tool-chip"><i class="fa-solid fa-rotate mr-1"></i>Make.com</span>
+        <span class="tool-chip"><i class="fa-solid fa-bolt mr-1"></i>Zapier</span>
+        <span class="tool-chip"><i class="fa-solid fa-diagram-project mr-1"></i>N8N</span>
+        <span class="tool-chip"><i class="fa-solid fa-note-sticky mr-1"></i>Notion</span>
+        <span class="tool-chip"><i class="fa-solid fa-table mr-1"></i>Airtable</span>
+        <span class="tool-chip"><i class="fa-solid fa-plug mr-1"></i>API/Webhook</span>
+        <span class="tool-chip"><i class="fa-brands fa-google mr-1"></i>Google WS</span>
+        <span class="tool-chip"><i class="fa-brands fa-slack mr-1"></i>Slack</span>
       </div>
     </div>
   </div>
@@ -119,17 +182,17 @@
 <section id="automation" style="background:var(--bg2)">
   <div class="container">
     <div class="fi">
-      <p class="eyebrow">How it works</p>
+      <p class="eyebrow"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>How it works</p>
       <h2 class="sh">See automation <em>in action</em></h2>
     </div>
     <div class="showcase-wrap fi">
       <div class="showcase-canvas-card">
-        <div class="sc-label">Live workflow simulation</div>
+        <div class="sc-label"><i class="fa-solid fa-circle-play mr-1"></i>Live workflow simulation</div>
         <canvas id="nocode-canvas"></canvas>
       </div>
       <div class="showcase-info">
         <div class="sc-info-card">
-          <div class="sc-info-title">Lead capture → CRM → Notification</div>
+          <div class="sc-info-title"><i class="fa-solid fa-arrow-right-arrow-left mr-1 text-[var(--accent)]"></i>Lead capture → CRM → Notification</div>
           <p class="sc-info-desc">A new lead fills your Typeform → Make.com captures it, filters by budget, creates a record in Airtable, and pings your team on Slack — in under 5 seconds.</p>
           <div class="sc-flow">
             <span class="scnode">Typeform</span><span class="scarr">→</span>
@@ -137,10 +200,10 @@
             <span class="scnode">Airtable</span><span class="scarr">→</span>
             <span class="scnode">Slack</span>
           </div>
-          <div class="sc-result">6h saved / week</div>
+          <div class="sc-result"><i class="fa-solid fa-clock mr-1"></i>6h saved / week</div>
         </div>
         <div class="sc-info-card">
-          <div class="sc-info-title">Client onboarding → zero admin</div>
+          <div class="sc-info-title"><i class="fa-solid fa-arrow-right-arrow-left mr-1 text-[var(--accent)]"></i>Client onboarding → zero admin</div>
           <p class="sc-info-desc">New client email arrives → Notion page created, Drive folder generated, welcome email sent. 45 min of admin turned into 0 seconds.</p>
           <div class="sc-flow">
             <span class="scnode">Gmail</span><span class="scarr">→</span>
@@ -148,10 +211,10 @@
             <span class="scnode">Drive</span><span class="scarr">→</span>
             <span class="scnode">Email</span>
           </div>
-          <div class="sc-result">0 manual steps</div>
+          <div class="sc-result"><i class="fa-solid fa-check mr-1"></i>0 manual steps</div>
         </div>
         <div class="sc-info-card">
-          <div class="sc-info-title">Stripe payment → full onboarding</div>
+          <div class="sc-info-title"><i class="fa-solid fa-arrow-right-arrow-left mr-1 text-[var(--accent)]"></i>Stripe payment → full onboarding</div>
           <p class="sc-info-desc">Customer pays → Zapier creates their account, sends welcome email, adds to mailing list and notifies the team on Slack. All within 30 seconds.</p>
           <div class="sc-flow">
             <span class="scnode">Stripe</span><span class="scarr">→</span>
@@ -159,41 +222,38 @@
             <span class="scnode">Mailchimp</span><span class="scarr">→</span>
             <span class="scnode">Slack</span>
           </div>
-          <div class="sc-result">100% hands-free</div>
+          <div class="sc-result"><i class="fa-solid fa-robot mr-1"></i>100% hands-free</div>
         </div>
       </div>
     </div>
 
-    <!-- WORKFLOW DIAGRAM -->
-    <div class="fi">
-      <p class="eyebrow" style="margin-bottom:1rem">How workflows connect</p>
-    </div>
+    <div class="fi"><p class="eyebrow" style="margin-bottom:1rem"><i class="fa-solid fa-sitemap mr-1"></i>How workflows connect</p></div>
     <div class="wf-diagram fi">
       <div class="wf-title">Full e-commerce automation pipeline <span class="wf-badge">Make.com</span></div>
       <div style="font-size:0.75rem;color:var(--muted);margin-bottom:1rem">← Scroll to see full workflow on mobile</div>
       <div class="wf-row">
-        <div class="wf-node trigger"><div class="wf-node-icon">📋</div><div class="wf-node-name">Typeform</div><div class="wf-node-type">Trigger</div></div>
+        <div class="wf-node trigger"><div class="wf-node-icon"><i class="fa-brands fa-wpforms"></i></div><div class="wf-node-name">Typeform</div><div class="wf-node-type">Trigger</div></div>
         <div class="wf-connector"><div class="wf-arrow"><div class="wf-line"></div><div class="wf-arrowhead"></div></div></div>
-        <div class="wf-node filter"><div class="wf-node-icon">⚡</div><div class="wf-node-name">Filter</div><div class="wf-node-type">Budget &gt; $500</div></div>
+        <div class="wf-node filter"><div class="wf-node-icon"><i class="fa-solid fa-filter"></i></div><div class="wf-node-name">Filter</div><div class="wf-node-type">Budget > $500</div></div>
         <div class="wf-connector"><div class="wf-arrow"><div class="wf-line"></div><div class="wf-arrowhead"></div></div></div>
-        <div class="wf-node action"><div class="wf-node-icon">🗄️</div><div class="wf-node-name">Airtable</div><div class="wf-node-type">Add row</div></div>
+        <div class="wf-node action"><div class="wf-node-icon"><i class="fa-solid fa-table-cells"></i></div><div class="wf-node-name">Airtable</div><div class="wf-node-type">Add row</div></div>
         <div class="wf-connector"><div class="wf-arrow"><div class="wf-line"></div><div class="wf-arrowhead"></div></div></div>
-        <div class="wf-node action"><div class="wf-node-icon">✉️</div><div class="wf-node-name">Gmail</div><div class="wf-node-type">Send email</div></div>
+        <div class="wf-node action"><div class="wf-node-icon"><i class="fa-brands fa-google"></i></div><div class="wf-node-name">Gmail</div><div class="wf-node-type">Send email</div></div>
         <div class="wf-connector"><div class="wf-arrow"><div class="wf-line"></div><div class="wf-arrowhead"></div></div></div>
-        <div class="wf-node action"><div class="wf-node-icon">💬</div><div class="wf-node-name">Slack</div><div class="wf-node-type">Notify team</div></div>
+        <div class="wf-node action"><div class="wf-node-icon"><i class="fa-brands fa-slack"></i></div><div class="wf-node-name">Slack</div><div class="wf-node-type">Notify team</div></div>
         <div class="wf-connector"><div class="wf-arrow"><div class="wf-line"></div><div class="wf-arrowhead"></div></div></div>
-        <div class="wf-node action"><div class="wf-node-icon">📊</div><div class="wf-node-name">Sheets</div><div class="wf-node-type">Log data</div></div>
+        <div class="wf-node action"><div class="wf-node-icon"><i class="fa-solid fa-chart-line"></i></div><div class="wf-node-name">Sheets</div><div class="wf-node-type">Log data</div></div>
       </div>
       <div class="wf-row" style="margin-top:1.25rem">
-        <div class="wf-node trigger"><div class="wf-node-icon">💳</div><div class="wf-node-name">Stripe</div><div class="wf-node-type">Trigger</div></div>
+        <div class="wf-node trigger"><div class="wf-node-icon"><i class="fa-brands fa-stripe-s"></i></div><div class="wf-node-name">Stripe</div><div class="wf-node-type">Trigger</div></div>
         <div class="wf-connector"><div class="wf-arrow"><div class="wf-line"></div><div class="wf-arrowhead"></div></div></div>
-        <div class="wf-node action"><div class="wf-node-icon">📄</div><div class="wf-node-name">Notion</div><div class="wf-node-type">Create page</div></div>
+        <div class="wf-node action"><div class="wf-node-icon"><i class="fa-solid fa-file-lines"></i></div><div class="wf-node-name">Notion</div><div class="wf-node-type">Create page</div></div>
         <div class="wf-connector"><div class="wf-arrow"><div class="wf-line"></div><div class="wf-arrowhead"></div></div></div>
-        <div class="wf-node action"><div class="wf-node-icon">📁</div><div class="wf-node-name">Drive</div><div class="wf-node-type">Create folder</div></div>
+        <div class="wf-node action"><div class="wf-node-icon"><i class="fa-brands fa-google-drive"></i></div><div class="wf-node-name">Drive</div><div class="wf-node-type">Create folder</div></div>
         <div class="wf-connector"><div class="wf-arrow"><div class="wf-line"></div><div class="wf-arrowhead"></div></div></div>
-        <div class="wf-node action"><div class="wf-node-icon">📬</div><div class="wf-node-name">Mailchimp</div><div class="wf-node-type">Add subscriber</div></div>
+        <div class="wf-node action"><div class="wf-node-icon"><i class="fa-brands fa-mailchimp"></i></div><div class="wf-node-name">Mailchimp</div><div class="wf-node-type">Add subscriber</div></div>
         <div class="wf-connector"><div class="wf-arrow"><div class="wf-line"></div><div class="wf-arrowhead"></div></div></div>
-        <div class="wf-node action"><div class="wf-node-icon">💬</div><div class="wf-node-name">Slack</div><div class="wf-node-type">Notify team</div></div>
+        <div class="wf-node action"><div class="wf-node-icon"><i class="fa-brands fa-slack"></i></div><div class="wf-node-name">Slack</div><div class="wf-node-type">Notify team</div></div>
       </div>
       <div class="wf-legend">
         <div class="wf-legend-item"><div class="wf-legend-dot" style="background:var(--accent)"></div>Trigger — starts the workflow</div>
@@ -207,14 +267,44 @@
 <!-- SERVICES -->
 <section id="services">
   <div class="container">
-    <div class="fi"><p class="eyebrow">What I do</p><h2 class="sh">Services built to <em>save time</em></h2></div>
+    <div class="fi"><p class="eyebrow"><i class="fa-solid fa-briefcase mr-1"></i>What I do</p><h2 class="sh">Services built to <em>save time</em></h2></div>
     <div class="srv-grid fi">
-      <div class="srv-card"><div class="srv-icon">⚡</div><div class="srv-name">Workflow Automation</div><p class="srv-desc">Connect apps, eliminate manual tasks. From lead capture to onboarding — automated 24/7.</p><div class="srv-tags"><span class="stag">Make.com</span><span class="stag">Zapier</span><span class="stag">N8N</span></div></div>
-      <div class="srv-card"><div class="srv-icon">🗄️</div><div class="srv-name">CRM & Database</div><p class="srv-desc">Build and automate your CRM with Notion or Airtable. Contacts, deals, follow-ups — always synced.</p><div class="srv-tags"><span class="stag">Notion</span><span class="stag">Airtable</span><span class="stag">HubSpot</span></div></div>
-      <div class="srv-card"><div class="srv-icon">📬</div><div class="srv-name">Email & Notifications</div><p class="srv-desc">Emails, Slack alerts, SMS triggered automatically by customer actions. Zero manual follow-up.</p><div class="srv-tags"><span class="stag">Gmail</span><span class="stag">Slack</span><span class="stag">Mailchimp</span></div></div>
-      <div class="srv-card"><div class="srv-icon">📊</div><div class="srv-name">Automated Reporting</div><p class="srv-desc">Weekly reports pulled, formatted and emailed to your inbox every Monday at 8am automatically.</p><div class="srv-tags"><span class="stag">Sheets</span><span class="stag">Notion</span></div></div>
-      <div class="srv-card"><div class="srv-icon">🔌</div><div class="srv-name">API & Webhooks</div><p class="srv-desc">Connect any apps — even those with no native integration — via webhooks and HTTP requests.</p><div class="srv-tags"><span class="stag">Webhooks</span><span class="stag">REST API</span><span class="stag">JSON</span></div></div>
-      <div class="srv-card"><div class="srv-icon">🎯</div><div class="srv-name">Free Audit (30 min)</div><p class="srv-desc">I identify your top 3 automation wins. Clear action plan — zero commitment required.</p><div class="srv-tags"><span class="stag">Free</span><span class="stag">30 min</span><span class="stag">Video call</span></div></div>
+      <div class="srv-card">
+        <div class="srv-icon"><i class="fa-solid fa-bolt text-xl"></i></div>
+        <div class="srv-name">Workflow Automation</div>
+        <p class="srv-desc">Connect apps, eliminate manual tasks. From lead capture to onboarding — automated 24/7.</p>
+        <div class="srv-tags"><span class="stag">Make.com</span><span class="stag">Zapier</span><span class="stag">N8N</span></div>
+      </div>
+      <div class="srv-card">
+        <div class="srv-icon"><i class="fa-solid fa-database text-xl"></i></div>
+        <div class="srv-name">CRM & Database</div>
+        <p class="srv-desc">Build and automate your CRM with Notion or Airtable. Contacts, deals, follow-ups — always synced.</p>
+        <div class="srv-tags"><span class="stag">Notion</span><span class="stag">Airtable</span><span class="stag">HubSpot</span></div>
+      </div>
+      <div class="srv-card">
+        <div class="srv-icon"><i class="fa-solid fa-envelope-open-text text-xl"></i></div>
+        <div class="srv-name">Email & Notifications</div>
+        <p class="srv-desc">Emails, Slack alerts, SMS triggered automatically by customer actions. Zero manual follow-up.</p>
+        <div class="srv-tags"><span class="stag">Gmail</span><span class="stag">Slack</span><span class="stag">Mailchimp</span></div>
+      </div>
+      <div class="srv-card">
+        <div class="srv-icon"><i class="fa-solid fa-chart-bar text-xl"></i></div>
+        <div class="srv-name">Automated Reporting</div>
+        <p class="srv-desc">Weekly reports pulled, formatted and emailed to your inbox every Monday at 8am automatically.</p>
+        <div class="srv-tags"><span class="stag">Sheets</span><span class="stag">Notion</span></div>
+      </div>
+      <div class="srv-card">
+        <div class="srv-icon"><i class="fa-solid fa-plug text-xl"></i></div>
+        <div class="srv-name">API & Webhooks</div>
+        <p class="srv-desc">Connect any apps — even those with no native integration — via webhooks and HTTP requests.</p>
+        <div class="srv-tags"><span class="stag">Webhooks</span><span class="stag">REST API</span><span class="stag">JSON</span></div>
+      </div>
+      <div class="srv-card">
+        <div class="srv-icon"><i class="fa-solid fa-magnifying-glass-chart text-xl"></i></div>
+        <div class="srv-name">Free Audit (30 min)</div>
+        <p class="srv-desc">I identify your top 3 automation wins. Clear action plan — zero commitment required.</p>
+        <div class="srv-tags"><span class="stag">Free</span><span class="stag">30 min</span><span class="stag">Video call</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -222,41 +312,61 @@
 <!-- PROJECTS -->
 <section id="projects" style="background:var(--bg2)">
   <div class="container">
-    <div class="fi"><p class="eyebrow">Portfolio</p><h2 class="sh">Real workflows, <em>real results</em></h2></div>
+    <div class="fi"><p class="eyebrow"><i class="fa-solid fa-folder-open mr-1"></i>Portfolio</p><h2 class="sh">Real workflows, <em>real results</em></h2></div>
     <div class="proj-grid fi">
       <div class="proj-card">
         <div>
-          <span class="proj-sector sect-ecom">E-commerce · Make.com</span>
+          <span class="proj-sector sect-ecom"><i class="fa-solid fa-store mr-1"></i>E-commerce · Make.com</span>
           <div class="proj-name">Lead capture & qualification — Online store</div>
           <p class="proj-desc">Typeform leads filtered by budget, auto-added to Airtable CRM, instant Slack alert to sales team. Zero copy-pasting. Fully documented.</p>
-          <div class="flow"><span class="fnode">Typeform</span><span class="farr">→</span><span class="fnode">Filter</span><span class="farr">→</span><span class="fnode">Airtable</span><span class="farr">→</span><span class="fnode">Slack</span></div>
+          <div class="flow">
+            <span class="fnode"><i class="fa-brands fa-wpforms mr-1"></i>Typeform</span><span class="farr">→</span>
+            <span class="fnode"><i class="fa-solid fa-filter mr-1"></i>Filter</span><span class="farr">→</span>
+            <span class="fnode"><i class="fa-solid fa-table-cells mr-1"></i>Airtable</span><span class="farr">→</span>
+            <span class="fnode"><i class="fa-brands fa-slack mr-1"></i>Slack</span>
+          </div>
         </div>
         <div class="proj-metric"><span class="proj-metric-n">6h</span><span class="proj-metric-l">saved / week</span></div>
       </div>
       <div class="proj-card">
         <div>
-          <span class="proj-sector sect-agency">Agency · Make.com + Notion</span>
+          <span class="proj-sector sect-agency"><i class="fa-solid fa-building mr-1"></i>Agency · Make.com + Notion</span>
           <div class="proj-name">Client onboarding automation — Marketing agency</div>
           <p class="proj-desc">New client email → Notion project page + Drive folder + welcome email in 30 seconds. Was 45 min of manual admin per client.</p>
-          <div class="flow"><span class="fnode">Gmail</span><span class="farr">→</span><span class="fnode">Notion</span><span class="farr">→</span><span class="fnode">Drive</span><span class="farr">→</span><span class="fnode">Welcome email</span></div>
+          <div class="flow">
+            <span class="fnode"><i class="fa-brands fa-google mr-1"></i>Gmail</span><span class="farr">→</span>
+            <span class="fnode"><i class="fa-solid fa-file-lines mr-1"></i>Notion</span><span class="farr">→</span>
+            <span class="fnode"><i class="fa-brands fa-google-drive mr-1"></i>Drive</span><span class="farr">→</span>
+            <span class="fnode"><i class="fa-solid fa-envelope mr-1"></i>Email</span>
+          </div>
         </div>
         <div class="proj-metric"><span class="proj-metric-n">0</span><span class="proj-metric-l">manual steps</span></div>
       </div>
       <div class="proj-card">
         <div>
-          <span class="proj-sector sect-saas">SaaS · N8N</span>
+          <span class="proj-sector sect-saas"><i class="fa-solid fa-rocket mr-1"></i>SaaS · N8N</span>
           <div class="proj-name">Automated weekly sales report — SaaS startup</div>
           <p class="proj-desc">Every Monday 8am: N8N pulls Airtable data, formats Google Sheets report, emails founder. Ready before morning coffee.</p>
-          <div class="flow"><span class="fnode">Schedule</span><span class="farr">→</span><span class="fnode">Airtable</span><span class="farr">→</span><span class="fnode">Sheets</span><span class="farr">→</span><span class="fnode">Gmail</span></div>
+          <div class="flow">
+            <span class="fnode"><i class="fa-solid fa-clock mr-1"></i>Schedule</span><span class="farr">→</span>
+            <span class="fnode"><i class="fa-solid fa-table-cells mr-1"></i>Airtable</span><span class="farr">→</span>
+            <span class="fnode"><i class="fa-solid fa-sheet-plastic mr-1"></i>Sheets</span><span class="farr">→</span>
+            <span class="fnode"><i class="fa-brands fa-google mr-1"></i>Gmail</span>
+          </div>
         </div>
         <div class="proj-metric"><span class="proj-metric-n">3h</span><span class="proj-metric-l">saved / week</span></div>
       </div>
       <div class="proj-card">
         <div>
-          <span class="proj-sector sect-coach">Coach · Zapier</span>
+          <span class="proj-sector sect-coach"><i class="fa-solid fa-chalkboard-user mr-1"></i>Coach · Zapier</span>
           <div class="proj-name">Student onboarding pipeline — Online coach</div>
           <p class="proj-desc">Stripe payment → Notion client page + welcome email + Mailchimp subscriber. 0 minutes admin per new student.</p>
-          <div class="flow"><span class="fnode">Stripe</span><span class="farr">→</span><span class="fnode">Notion</span><span class="farr">→</span><span class="fnode">Gmail</span><span class="farr">→</span><span class="fnode">Mailchimp</span></div>
+          <div class="flow">
+            <span class="fnode"><i class="fa-brands fa-stripe-s mr-1"></i>Stripe</span><span class="farr">→</span>
+            <span class="fnode"><i class="fa-solid fa-file-lines mr-1"></i>Notion</span><span class="farr">→</span>
+            <span class="fnode"><i class="fa-brands fa-google mr-1"></i>Gmail</span><span class="farr">→</span>
+            <span class="fnode"><i class="fa-brands fa-mailchimp mr-1"></i>Mailchimp</span>
+          </div>
         </div>
         <div class="proj-metric"><span class="proj-metric-n">100%</span><span class="proj-metric-l">hands-free</span></div>
       </div>
@@ -267,40 +377,51 @@
 <!-- PRICING -->
 <section id="pricing">
   <div class="container">
-    <div class="fi"><p class="eyebrow">Investment</p><h2 class="sh">Simple, <em>transparent pricing</em></h2></div>
+    <div class="fi"><p class="eyebrow"><i class="fa-solid fa-tags mr-1"></i>Investment</p><h2 class="sh">Simple, <em>transparent pricing</em></h2></div>
     <div class="pricing-grid fi">
       <div class="price-card">
-        <div class="price-name">Starter</div>
+        <div class="price-name"><i class="fa-solid fa-seedling mr-2 text-[var(--accent)]"></i>Starter</div>
         <div class="price-amount">$45 <span>fixed</span></div>
         <p class="price-desc">One automation, 2–3 apps. First quick win, delivered in 48h.</p>
-        <ul class="price-list"><li>1 workflow built</li><li>2–3 apps connected</li><li>Delivered in 48h</li><li>Video walkthrough</li></ul>
+        <ul class="price-list">
+          <li>1 workflow built</li><li>2–3 apps connected</li>
+          <li>Delivered in 48h</li><li>Video walkthrough</li>
+        </ul>
       </div>
       <div class="price-card hot">
-        <div class="price-badge">Most popular</div>
-        <div class="price-name">Full Build</div>
+        <div class="price-badge"><i class="fa-solid fa-star mr-1"></i>Most popular</div>
+        <div class="price-name"><i class="fa-solid fa-wrench mr-2 text-[var(--accent)]"></i>Full Build</div>
         <div class="price-amount">$150 <span>fixed</span></div>
         <p class="price-desc">Complex workflow, filters, error handling, full documentation.</p>
-        <ul class="price-list"><li>1 complex workflow</li><li>Unlimited apps</li><li>Filters & error handling</li><li>Full documentation</li><li>1 revision</li></ul>
+        <ul class="price-list">
+          <li>1 complex workflow</li><li>Unlimited apps</li>
+          <li>Filters & error handling</li><li>Full documentation</li><li>1 revision</li>
+        </ul>
       </div>
       <div class="price-card">
-        <div class="price-name">Retainer</div>
+        <div class="price-name"><i class="fa-solid fa-rotate mr-2 text-[var(--accent)]"></i>Retainer</div>
         <div class="price-amount">$350 <span>/mo</span></div>
         <p class="price-desc">Ongoing support — build, monitor, optimize every month.</p>
-        <ul class="price-list"><li>Up to 3 workflows/mo</li><li>Priority response</li><li>Bug fixes & updates</li><li>Monthly strategy call</li></ul>
+        <ul class="price-list">
+          <li>Up to 3 workflows/mo</li><li>Priority response</li>
+          <li>Bug fixes & updates</li><li>Monthly strategy call</li>
+        </ul>
       </div>
     </div>
-    <p style="text-align:center;font-size:0.82rem;color:var(--muted);margin-top:1.5rem">Not sure? <a href="#contact" style="color:var(--accent);text-decoration:none">Book a free 30-min audit</a> — I'll tell you exactly what to automate first.</p>
+    <p style="text-align:center;font-size:0.82rem;color:var(--muted);margin-top:1.5rem">
+      Not sure? <a href="#contact" style="color:var(--accent);text-decoration:none">Book a free 30-min audit</a> — I'll tell you exactly what to automate first.
+    </p>
   </div>
 </section>
 
 <!-- ABOUT -->
 <section id="about" style="background:var(--bg2)">
   <div class="container">
-    <div class="fi"><p class="eyebrow">About me</p><h2 class="sh">The person behind <em>the automations</em></h2></div>
+    <div class="fi"><p class="eyebrow"><i class="fa-solid fa-user mr-1"></i>About me</p><h2 class="sh">The person behind <em>the automations</em></h2></div>
     <div class="about-grid fi">
       <div class="about-photo-card">
         <div class="photo-area">
-          <div class="photo-hint"><img src="images/profil.png" style="width:100%;height:100%;object-fit:cover;"></div>
+          <img src="images/profil.png" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;">
         </div>
         <div class="photo-meta">
           <div class="photo-meta-name">Samuel CHETKOU</div>
@@ -314,20 +435,27 @@
         <p>I started in automation because I kept seeing smart people wasting hours copy-pasting data between tools. That's not where your energy should go. My job is to fix that — permanently.</p>
         <p>Every workflow I deliver comes with full documentation. I don't build and disappear — I make sure your team can own and maintain it independently.</p>
         <div class="skill-grid">
-          <span class="skill-chip">Make.com</span><span class="skill-chip">Zapier</span><span class="skill-chip">N8N</span>
-          <span class="skill-chip">Notion</span><span class="skill-chip">Airtable</span><span class="skill-chip">Google Workspace</span>
-          <span class="skill-chip">Slack</span><span class="skill-chip">Webhook / API</span><span class="skill-chip">Typeform</span>
-          <span class="skill-chip">Stripe</span><span class="skill-chip">ActiveCampaign</span><span class="skill-chip">HubSpot</span>
+          <span class="skill-chip"><i class="fa-solid fa-rotate mr-1"></i>Make.com</span>
+          <span class="skill-chip"><i class="fa-solid fa-bolt mr-1"></i>Zapier</span>
+          <span class="skill-chip"><i class="fa-solid fa-diagram-project mr-1"></i>N8N</span>
+          <span class="skill-chip"><i class="fa-solid fa-file-lines mr-1"></i>Notion</span>
+          <span class="skill-chip"><i class="fa-solid fa-table mr-1"></i>Airtable</span>
+          <span class="skill-chip"><i class="fa-brands fa-google mr-1"></i>Google WS</span>
+          <span class="skill-chip"><i class="fa-brands fa-slack mr-1"></i>Slack</span>
+          <span class="skill-chip"><i class="fa-solid fa-plug mr-1"></i>Webhook/API</span>
+          <span class="skill-chip"><i class="fa-brands fa-stripe-s mr-1"></i>Stripe</span>
+          <span class="skill-chip"><i class="fa-brands fa-hubspot mr-1"></i>HubSpot</span>
         </div>
-        <div style="margin-top:1.75rem;padding:1.25rem 1.5rem;background:var(--card-bg);border:0.5px solid var(--border);border-radius:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;transition:background 0.4s">
+
+        <!-- CV DOWNLOAD avec choix FR/EN -->
+        <div class="cv-download-box">
           <div>
-            <div style="font-family:'Cabinet Grotesk',sans-serif;font-size:0.95rem;font-weight:800;margin-bottom:0.2rem">My Resume</div>
-            <div style="font-size:0.8rem;color:var(--muted)">Download my full CV — skills, tools, background & experience.</div>
+            <div class="cv-download-title"><i class="fa-solid fa-file-pdf mr-2"></i>My Resume</div>
+            <div class="cv-download-sub">Download my full CV — available in French & English</div>
           </div>
-          <a href="images/Cv Samuel.pdf" download style="display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#060608;padding:0.6rem 1.4rem;border-radius:100px;font-size:0.84rem;font-weight:700;text-decoration:none;flex-shrink:0;transition:opacity 0.2s" onmouseover="this.style.opacity='.82'" onmouseout="this.style.opacity='1'">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download CV
-          </a>
+          <button onclick="openCvModal()" class="cv-open-btn">
+            <i class="fa-solid fa-download mr-2"></i>Download CV
+          </button>
         </div>
       </div>
     </div>
@@ -337,36 +465,74 @@
 <!-- CONTACT -->
 <section id="contact" style="overflow:hidden;">
   <div class="container">
-    <div class="fi"><p class="eyebrow">Get in touch</p><h2 class="sh">Let's build something <em>together</em></h2></div>
+    <div class="fi"><p class="eyebrow"><i class="fa-solid fa-paper-plane mr-1"></i>Get in touch</p><h2 class="sh">Let's build something <em>together</em></h2></div>
     <div class="contact-card fi">
       <div class="cl">
         <h3>Start with a free audit</h3>
         <p>Book a 30-minute call. I'll map your top 3 automation wins — no commitment. Most clients save 5+ hours per week after project 1.</p>
-        <a href="mailto:samuelchetk@gmail.com" class="clink"><div class="clink-icon">✉</div>samuelchetk@gmail.com</a>
-        <a href="https://www.linkedin.com/in/samuel-chetkou-b3a32a306/" class="clink"><div class="clink-icon">in</div>linkedin profile</a>
-        <a href="https://www.upwork.com/freelancers/~010cf4ff1b7983a0d8" class="clink"><div class="clink-icon">Up</div>Upwork profile</a>
-        <a href="https://comeup.com/fr/@samuelchetkou" class="clink"><div class="clink-icon">C</div>ComUp profile</a>
+
+        <!-- Email -->
+        <a href="mailto:samuelchetk@gmail.com" class="clink">
+          <div class="clink-icon"><i class="fa-solid fa-envelope"></i></div>
+          samuelchetk@gmail.com
+        </a>
+
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/in/samuel-chetkou-b3a32a306/" target="_blank" class="clink">
+          <div class="clink-icon" style="background:#0a66c2;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+          LinkedIn — Samuel CHETKOU
+        </a>
+
+        <!-- Upwork -->
+        <a href="https://www.upwork.com/freelancers/~010cf4ff1b7983a0d8" target="_blank" class="clink">
+          <div class="clink-icon" style="background:#6fda44;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.561 13.158c-1.102 0-2.135-.467-3.074-1.227l.228-1.076.008-.042c.207-1.143.849-3.06 2.839-3.06 1.492 0 2.703 1.212 2.703 2.703-.001 1.489-1.212 2.702-2.704 2.702zm0-8.14c-2.539 0-4.51 1.649-5.31 4.366-1.22-1.834-2.148-4.036-2.687-5.892H7.828v7.112c-.002 1.406-1.141 2.546-2.547 2.546-1.405 0-2.543-1.14-2.543-2.546V3.492H0v7.112c0 2.914 2.37 5.303 5.281 5.303 2.913 0 5.283-2.389 5.283-5.303v-1.19c.529 1.107 1.182 2.229 1.974 3.221l-1.673 7.873h2.797l1.213-5.71c1.063.679 2.285 1.109 3.686 1.109 3 0 5.439-2.452 5.439-5.45 0-3-2.439-5.439-5.439-5.439z"/></svg>
+          </div>
+          Upwork — Samuel CHETKOU
+        </a>
+
+        <!-- ComUp -->
+        <a href="https://comeup.com/fr/@samuelchetkou" target="_blank" class="clink">
+          <div class="clink-icon" style="background:#ff6b35;">
+            <i class="fa-solid fa-c text-white text-sm font-bold"></i>
+          </div>
+          ComUp — @samuelchetkou
+        </a>
       </div>
+
       <div class="cf">
-        <div class="fg"><label>Your name</label><input type="text" placeholder="Jane Smith"></div>
-        <div class="fg"><label>Email</label><input type="email" placeholder="jane@company.com"></div>
-        <div class="fg"><label>Service needed</label>
-          <select>
+        <div class="fg">
+          <label><i class="fa-solid fa-user mr-1"></i>Your name</label>
+          <input type="text" id="f-name" placeholder="Jane Smith">
+        </div>
+        <div class="fg">
+          <label><i class="fa-solid fa-envelope mr-1"></i>Email</label>
+          <input type="email" id="f-email" placeholder="jane@company.com">
+        </div>
+        <div class="fg">
+          <label><i class="fa-solid fa-list-check mr-1"></i>Service needed</label>
+          <select id="f-service">
             <option value="">Select a service...</option>
             <option>Workflow automation (Make / Zapier / N8N)</option>
             <option>CRM & database setup</option>
             <option>Email & notification flows</option>
             <option>Automated Productivity & Task Management</option>
-            <option>Automated Data Collection, Tracking, and Reporting Systems</option>
-            <option>Semi-automated creation systems (leveraging Generative AI)</option>
-            <option>Automated Prospecting and Lead Management Systems</option>
-            <option>Automated reporting</option>
+            <option>Automated Data Collection & Reporting</option>
+            <option>Semi-automated AI creation systems</option>
+            <option>Automated Prospecting & Lead Management</option>
             <option>Free 30-min audit</option>
             <option>Something else</option>
           </select>
         </div>
-        <div class="fg"><label>Your project</label><textarea placeholder="What do you want to automate? What apps do you use?"></textarea></div>
-        <button class="form-btn" onclick="handleSubmit(event)">Send message →</button>
+        <div class="fg">
+          <label><i class="fa-solid fa-comment mr-1"></i>Your project</label>
+          <textarea id="f-message" placeholder="What do you want to automate? What apps do you use?"></textarea>
+        </div>
+        <button class="form-btn" onclick="handleSubmit(event)">
+          <i class="fa-solid fa-paper-plane mr-2"></i>Send message →
+        </button>
       </div>
     </div>
   </div>
@@ -374,8 +540,13 @@
 
 <footer>
   <div class="footer-logo"><em>•</em>SAMUEL<em>•</em></div>
-  <p class="footer-copy">© 2026 Samuel DC — No-Code & Automation Freelancer</p>
-  <div class="footer-links"><a href="#automation">Automation</a><a href="#services">Services</a><a href="#projects">Projects</a><a href="#contact">Contact</a></div>
+  <p class="footer-copy">© 2026 Samuel CHETKOU — No-Code & Automation Freelancer</p>
+  <div class="footer-links">
+    <a href="#automation">Automation</a>
+    <a href="#services">Services</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
 </footer>
 </div>
 
