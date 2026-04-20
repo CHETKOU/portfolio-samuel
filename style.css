@@ -3,7 +3,7 @@
 }
 
 html, body {
-  overflow-x: hidden; /* Empêche tout débordement horizontal */
+  overflow-x: hidden;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -307,7 +307,6 @@ section{padding:5rem 2.5rem;transition:background 0.4s}
 .form-btn{background:var(--accent);color:#060608;border:none;padding:0.85rem;border-radius:100px;font-size:0.92rem;font-weight:700;cursor:pointer;font-family:'Instrument Sans',sans-serif;transition:opacity 0.2s}
 .form-btn:hover{opacity:0.85}
 
-
 /* FOOTER */
 footer{
   padding:2rem 2.5rem;border-top:0.5px solid var(--border);
@@ -325,88 +324,6 @@ footer{
 .fi{opacity:0;transform:translateY(28px);transition:opacity 0.65s ease,transform 0.65s ease}
 .fi.show{opacity:1;transform:none}
 
-/* FI = fade in */
-.fi{opacity:0;transform:translateY(24px);transition:opacity 0.6s,transform 0.6s}
-.fi.show{opacity:1;transform:none}
-
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  /* Section Hero : Empilement vertical et alignement central */
-  .hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 6rem 1rem 3rem;
-    gap: 3rem;
-  }
-
-  /* Rendre le globe visible sous le texte */
-  .hero-right {
-    display: flex !important; /* Force l'affichage */
-    justify-content: center;
-    width: 100%;
-    max-width: 320px; /* Taille optimale pour mobile */
-    order: 2; /* S'assure qu'il passe après le texte */
-  }
-
-  #globe-canvas {
-    width: 100% !important;
-    height: auto !important;
-  }
-
-  /* Aligner la carte de contact (ton image WhatsApp) */
-  .contact-card {
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem !important; /* Évite l'écrasement sur petit écran */
-    width: 100%;
-    max-width: 100%;
-    margin: 0 auto;
-  }
-
-  /* Centrer les éléments de contact */
-  .cl {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-  }
-
-  .clink {
-    justify-content: center;
-    width: 100%;
-    font-size: 0.9rem;
-  }
-
-  /* Formulaire en pleine largeur */
-  .cf {
-    width: 100%;
-  }
-
-  .fg input, .fg select, .fg textarea {
-    width: 100% !important;
-  }
-}
-
-
-@media(max-width:600px){
-  .nav-links,.nav-right{display:none}
-  .hamburger{display:flex}
-  .srv-grid,.pricing-grid,.dash-stats{grid-template-columns:1fr}
-  .proj-card{grid-template-columns:1fr}
-  .proj-metric{text-align:left}
-  footer{flex-direction:column;text-align:center}
-  .book-grid2{grid-template-columns:1fr}
-  .slot-grid{grid-template-columns:repeat(4,1fr)}
-  #theme-switcher{bottom:1rem;right:1rem}
-}
-
-
-/* Custom Cursor Styles */
-
 /* CUSTOM CURSOR */
 #cursor{
   position:fixed;width:12px;height:12px;border-radius:50%;
@@ -420,3 +337,155 @@ footer{
   transform:translate(-50%,-50%);transition:transform 0.18s ease,width 0.3s,height 0.3s;
 }
 body:hover #cursor{opacity:1}
+
+/* =====================================================
+   RESPONSIVE MOBILE — Tailwind-style breakpoints
+   ===================================================== */
+
+/* Tablet : max 900px */
+@media (max-width: 900px) {
+
+  /* HERO : empilé verticalement */
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 6rem 1.5rem 3rem;
+    gap: 2.5rem;
+    text-align: center;
+    justify-items: center;
+  }
+  .hero > div:first-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero-desc { max-width: 100%; }
+  .hero-btns { justify-content: center; }
+  .hero-stats { justify-content: center; }
+
+  /* Hero right : visible et centré */
+  .hero-right {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  /* Showcase : empilé */
+  .showcase-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  /* Services : 2 colonnes sur tablette */
+  .srv-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Pricing : 1 colonne */
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .price-card.hot {
+    order: -1; /* Most popular en premier sur mobile */
+  }
+
+  /* About : empilé */
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .about-photo-card {
+    position: static;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  /* Contact : empilé */
+  .contact-card {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 1.75rem;
+  }
+  .cl { text-align: center; }
+  .clink { justify-content: center; }
+
+  /* Section padding réduit */
+  section { padding: 3.5rem 1.5rem; }
+
+  /* Nav */
+  .nav-links, .nav-right { display: none; }
+  .hamburger { display: flex; }
+  nav { padding: 1rem 1.5rem; }
+
+  /* Footer */
+  footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  .footer-links { justify-content: center; flex-wrap: wrap; gap: 1rem; }
+}
+
+/* Mobile : max 600px */
+@media (max-width: 600px) {
+
+  /* HERO */
+  .hero {
+    padding: 5rem 1rem 2.5rem;
+    gap: 2rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 10vw, 3rem);
+    letter-spacing: -1px;
+  }
+  .hero-stats { gap: 1.5rem; }
+  .stat-num { font-size: 1.5rem; }
+  .hero-btns {
+    flex-direction: column;
+    width: 100%;
+  }
+  .btn-primary, .btn-ghost {
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Hero right : taille réduite */
+  .hero-right { max-width: 100%; }
+  #globe-canvas { width: 100% !important; }
+
+  /* Services : 1 colonne */
+  .srv-grid { grid-template-columns: 1fr; }
+
+  /* Projets : sans metric sur côté */
+  .proj-card {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .proj-metric { text-align: left; }
+
+  /* Workflow diagram scrollable */
+  .wf-diagram { padding: 1.25rem; }
+  .wf-row { overflow-x: auto; padding-bottom: 8px; }
+
+  /* Theme switcher */
+  #theme-switcher { bottom: 1rem; right: 1rem; }
+  .theme-toggle-btn { padding: 0.4rem 0.75rem; font-size: 0.72rem; }
+
+  /* About */
+  .about-photo-card { max-width: 100%; }
+  .photo-area { aspect-ratio: 4/3; }
+
+  /* Contact form */
+  .contact-card { padding: 1.25rem; }
+  .fg input, .fg textarea, .fg select { font-size: 1rem; } /* Évite zoom iOS */
+
+  /* Sections padding */
+  section { padding: 2.5rem 1rem; }
+
+  /* Container padding */
+  .container { padding: 0; }
+
+  /* Showcase info cards */
+  .showcase-info { gap: 0.75rem; }
+
+  /* Cursor masqué sur mobile */
+  #cursor, #cursor-ring { display: none; }
+}

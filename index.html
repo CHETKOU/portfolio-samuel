@@ -5,7 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Samuel-Portfolio — No-Code & Automation </title>
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    corePlugins: {
+      preflight: false, // Ne pas écraser ton CSS existant
+    },
+    prefix: 'tw-', // Préfixe pour éviter les conflits avec ton CSS
+  }
+</script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -70,7 +79,7 @@
     <p class="hero-desc">No-code & automation freelancer. Make.com, Zapier, N8N — I connect your apps, kill manual work, and give your team hours back every single week.</p>
     <div class="hero-btns">
       <a href="#projects" class="btn-primary">See my work</a>
-      <a href="#" class="btn-ghost" href="#contact">Book free audit</a>
+      <a href="#contact" class="btn-ghost">Book free audit</a>
     </div>
     <div class="hero-stats">
       <div><div class="stat-num">5h+</div><div class="stat-lbl">saved / week / client</div></div>
@@ -296,7 +305,6 @@
     <div class="about-grid fi">
       <div class="about-photo-card">
         <div class="photo-area">
-          
           <div class="photo-hint" style="font-size:0.72rem;color:var(--muted)"><img src="images/profil.png" style="width:100%;height:100%;object-fit:cover;"></div>
         </div>
         <div class="photo-meta">
@@ -340,7 +348,7 @@
       <div class="cl">
         <h3>Start with a free audit</h3>
         <p>Book a 30-minute call. I'll map your top 3 automation wins — no commitment. Most clients save 5+ hours per week after project 1.</p>
-        <a href="samuelchetk@gmail.com" class="clink"><div class="clink-icon">✉</div><span class="__cf_email__" data-cfemail="f380929e86969fb3969e929a9fdd909c9e">samuelchetk@gmail.com</span></a>
+        <a href="mailto:samuelchetk@gmail.com" class="clink"><div class="clink-icon">✉</div>samuelchetk@gmail.com</a>
         <a href="https://www.linkedin.com/in/samuel-chetkou-b3a32a306/" class="clink"><div class="clink-icon">in</div>linkedin profile</a>
         <a href="https://www.upwork.com/freelancers/~010cf4ff1b7983a0d8" class="clink"><div class="clink-icon">Up</div>Upwork profile</a>
         <a href="https://comeup.com/fr/@samuelchetkou" class="clink"><div class="clink-icon">C</div>ComUp profile</a>
@@ -377,8 +385,6 @@
 </footer>
 </div><!-- end main-site -->
 
-<script src="script.js">
-    
-    </script>
+<script src="script.js"></script>
 </body>
 </html>
