@@ -3,22 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Samuel-Portfolio — No-Code & Automation </title>
+<title>Samuel-Portfolio — No-Code & Automation</title>
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
-    corePlugins: {
-      preflight: false, // Ne pas écraser ton CSS existant
-    },
-    prefix: 'tw-', // Préfixe pour éviter les conflits avec ton CSS
+    corePlugins: { preflight: false },
+    prefix: 'tw-',
   }
 </script>
+<!-- EmailJS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
 
 <!-- THEME SWITCHER -->
 <div id="theme-switcher">
@@ -97,9 +96,9 @@
       </div>
     </div>
     <div class="card-box profile-row">
-      <div class="profile-avatar"><img src="images/PROFIL.jpg" alt="Samuel" style="width: 100%; height: 100%; object-fit: cover;"></div>
+      <div class="profile-avatar"><img src="images/PROFIL.jpg" alt="Samuel" style="width:100%;height:100%;object-fit:cover;"></div>
       <div>
-        <div class="profile-name">Samuel CHETKOU </div>
+        <div class="profile-name">Samuel CHETKOU</div>
         <div class="profile-role">No-Code & Automation Expert</div>
         <div class="profile-avail">Open to projects</div>
       </div>
@@ -171,9 +170,7 @@
     </div>
     <div class="wf-diagram fi">
       <div class="wf-title">Full e-commerce automation pipeline <span class="wf-badge">Make.com</span></div>
-
       <div style="font-size:0.75rem;color:var(--muted);margin-bottom:1rem">← Scroll to see full workflow on mobile</div>
-
       <div class="wf-row">
         <div class="wf-node trigger"><div class="wf-node-icon">📋</div><div class="wf-node-name">Typeform</div><div class="wf-node-type">Trigger</div></div>
         <div class="wf-connector"><div class="wf-arrow"><div class="wf-line"></div><div class="wf-arrowhead"></div></div></div>
@@ -187,7 +184,6 @@
         <div class="wf-connector"><div class="wf-arrow"><div class="wf-line"></div><div class="wf-arrowhead"></div></div></div>
         <div class="wf-node action"><div class="wf-node-icon">📊</div><div class="wf-node-name">Sheets</div><div class="wf-node-type">Log data</div></div>
       </div>
-
       <div class="wf-row" style="margin-top:1.25rem">
         <div class="wf-node trigger"><div class="wf-node-icon">💳</div><div class="wf-node-name">Stripe</div><div class="wf-node-type">Trigger</div></div>
         <div class="wf-connector"><div class="wf-arrow"><div class="wf-line"></div><div class="wf-arrowhead"></div></div></div>
@@ -199,7 +195,6 @@
         <div class="wf-connector"><div class="wf-arrow"><div class="wf-line"></div><div class="wf-arrowhead"></div></div></div>
         <div class="wf-node action"><div class="wf-node-icon">💬</div><div class="wf-node-name">Slack</div><div class="wf-node-type">Notify team</div></div>
       </div>
-
       <div class="wf-legend">
         <div class="wf-legend-item"><div class="wf-legend-dot" style="background:var(--accent)"></div>Trigger — starts the workflow</div>
         <div class="wf-legend-item"><div class="wf-legend-dot" style="background:var(--accent3)"></div>Filter — conditions / logic</div>
@@ -305,7 +300,7 @@
     <div class="about-grid fi">
       <div class="about-photo-card">
         <div class="photo-area">
-          <div class="photo-hint" style="font-size:0.72rem;color:var(--muted)"><img src="images/profil.png" style="width:100%;height:100%;object-fit:cover;"></div>
+          <div class="photo-hint"><img src="images/profil.png" style="width:100%;height:100%;object-fit:cover;"></div>
         </div>
         <div class="photo-meta">
           <div class="photo-meta-name">Samuel CHETKOU</div>
@@ -324,7 +319,6 @@
           <span class="skill-chip">Slack</span><span class="skill-chip">Webhook / API</span><span class="skill-chip">Typeform</span>
           <span class="skill-chip">Stripe</span><span class="skill-chip">ActiveCampaign</span><span class="skill-chip">HubSpot</span>
         </div>
-        <!-- CV DOWNLOAD -->
         <div style="margin-top:1.75rem;padding:1.25rem 1.5rem;background:var(--card-bg);border:0.5px solid var(--border);border-radius:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;transition:background 0.4s">
           <div>
             <div style="font-family:'Cabinet Grotesk',sans-serif;font-size:0.95rem;font-weight:800;margin-bottom:0.2rem">My Resume</div>
@@ -341,7 +335,7 @@
 </section>
 
 <!-- CONTACT -->
-<section id="contact">
+<section id="contact" style="overflow:hidden;">
   <div class="container">
     <div class="fi"><p class="eyebrow">Get in touch</p><h2 class="sh">Let's build something <em>together</em></h2></div>
     <div class="contact-card fi">
@@ -383,7 +377,7 @@
   <p class="footer-copy">© 2026 Samuel DC — No-Code & Automation Freelancer</p>
   <div class="footer-links"><a href="#automation">Automation</a><a href="#services">Services</a><a href="#projects">Projects</a><a href="#contact">Contact</a></div>
 </footer>
-</div><!-- end main-site -->
+</div>
 
 <script src="script.js"></script>
 </body>
