@@ -1,51 +1,13 @@
 /* =====================================================
-   CONFIGURATION — Remplace ces valeurs avant de publier
-   =====================================================
+   ⚙️  CONFIGURATION — UNE SEULE LIGNE À MODIFIER
+   ─────────────────────────────────────────────────
+   Après avoir déployé ton backend sur Railway,
+   remplace l'URL ci-dessous par ton URL Railway.
 
-   ── EMAILJS ────────────────────────────────────────
-   1. Crée un compte sur https://www.emailjs.com (gratuit)
-   2. Email Services → Add Service → Gmail → copie le Service ID
-   3. Email Templates → Create Template → colle dans le body :
-
-      Nouveau message de {{from_name}}
-      Email client : {{from_email}}
-      Service souhaité : {{service}}
-      Message : {{message}}
-      Date : {{date}}
-
-      → "To Email" : samuelchetk@gmail.com
-      → Save → copie le Template ID
-
-   4. Account → General → copie ta Public Key
-   5. Remplace les 3 constantes ci-dessous
-
-   ── GOOGLE SHEETS ──────────────────────────────────
-   1. Crée un Google Sheet → ligne 1 = colonnes :
-      A: Date | B: Nom | C: Email | D: Service | E: Message
-
-   2. Extensions → Apps Script → colle :
-
-      function doPost(e) {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-        var data = JSON.parse(e.postData.contents);
-        sheet.appendRow([data.date, data.name, data.email, data.service, data.message]);
-        return ContentService.createTextOutput(JSON.stringify({ok:true}))
-          .setMimeType(ContentService.MimeType.JSON);
-      }
-
-   3. Déployer → Nouveau déploiement
-      Type : Application Web
-      Exécuter en tant que : Moi
-      Accès : Tout le monde
-      → Déployer → autorise → copie l'URL
-
-   4. Remplace SHEETS_WEBHOOK_URL ci-dessous
+   En local pour tester : 'http://localhost:3000'
+   En production        : 'https://ton-app.up.railway.app'
    ===================================================== */
-
-const EMAILJS_SERVICE_ID  = 'REMPLACE_SERVICE_ID';      // ex: service_abc123
-const EMAILJS_TEMPLATE_ID = 'REMPLACE_TEMPLATE_ID';     // ex: template_xyz789
-const EMAILJS_PUBLIC_KEY  = 'REMPLACE_PUBLIC_KEY';      // ex: abcXYZ_123abc
-const SHEETS_WEBHOOK_URL  = 'REMPLACE_URL_APPS_SCRIPT'; // ex: https://script.google.com/macros/s/.../exec
+const API_URL = 'http://localhost:3000';
 
 /* ===== THEME ===== */
 let currentTheme = 'dark';
@@ -64,27 +26,26 @@ document.addEventListener('click', e => {
   if (sw && !sw.contains(e.target)) document.getElementById('theme-panel').classList.remove('open');
 });
 
-/* ===== CV MODAL ===== */
+/* ===== MODAL CV ===== */
 function openCvModal() {
   document.getElementById('cv-modal').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 }
 function closeCvModal(e) {
-  if (!e || e.target === document.getElementById('cv-modal') || !e.target.closest) {
+  // Ferme si clic sur le fond ou sur le bouton fermer
+  if (!e || e.target.id === 'cv-modal') {
     document.getElementById('cv-modal').classList.add('hidden');
     document.body.style.overflow = '';
   }
 }
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeCvModal();
-});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCvModal({ target: document.getElementById('cv-modal') }); });
 
 /* ===== NAV MOBILE ===== */
 function toggleMenu() {
   document.getElementById('mobileMenu').classList.toggle('open');
 }
 
-/* ===== CLOCK ===== */
+/* ===== HORLOGE ===== */
 function updateClock() {
   const now = new Date();
   const pad = n => String(n).padStart(2, '0');
@@ -133,18 +94,12 @@ updateClock();
     ctx.strokeStyle = 'rgba(99,211,178,0.05)'; ctx.lineWidth = 0.5;
     for (let la = -60; la <= 60; la += 30) {
       ctx.beginPath(); let f = true;
-      for (let lo = 0; lo <= 360; lo += 3) {
-        const p = p2xy(la, lo, angle);
-        if (p.v) { if (f) { ctx.moveTo(p.x, p.y); f = false; } else ctx.lineTo(p.x, p.y); } else f = true;
-      }
+      for (let lo = 0; lo <= 360; lo += 3) { const p = p2xy(la, lo, angle); if (p.v) { if (f) { ctx.moveTo(p.x, p.y); f = false; } else ctx.lineTo(p.x, p.y); } else f = true; }
       ctx.stroke();
     }
     for (let lo = 0; lo < 360; lo += 30) {
       ctx.beginPath(); let f = true;
-      for (let la = -85; la <= 85; la += 3) {
-        const p = p2xy(la, lo, angle);
-        if (p.v) { if (f) { ctx.moveTo(p.x, p.y); f = false; } else ctx.lineTo(p.x, p.y); } else f = true;
-      }
+      for (let la = -85; la <= 85; la += 3) { const p = p2xy(la, lo, angle); if (p.v) { if (f) { ctx.moveTo(p.x, p.y); f = false; } else ctx.lineTo(p.x, p.y); } else f = true; }
       ctx.stroke();
     }
     dots.forEach(([la, lo]) => {
@@ -180,33 +135,33 @@ updateClock();
     { x:.88, y:.5,  l:'Slack',    icon:'💬',  c:'#f0a500' },
   ];
   const edges = [[0,1],[0,2],[1,3],[2,4],[3,5],[4,5]];
-  const pkts = edges.map((_, i) => ({ ei:i, t:(i*0.18)%1, spd:0.005+Math.random()*0.003 }));
+  const pkts = edges.map((_, i) => ({ ei: i, t: (i * 0.18) % 1, spd: 0.005 + Math.random() * 0.003 }));
   let fr = 0;
   function draw() {
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
     edges.forEach(([a, b]) => {
       const na = nodes[a], nb = nodes[b];
-      ctx.beginPath(); ctx.moveTo(na.x*W, na.y*H); ctx.lineTo(nb.x*W, nb.y*H);
+      ctx.beginPath(); ctx.moveTo(na.x * W, na.y * H); ctx.lineTo(nb.x * W, nb.y * H);
       ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1.5; ctx.stroke();
     });
     pkts.forEach(pk => {
       const [a, b] = edges[pk.ei];
       const na = nodes[a], nb = nodes[b];
-      const px = na.x*W + (nb.x*W - na.x*W)*pk.t;
-      const py = na.y*H + (nb.y*H - na.y*H)*pk.t;
-      ctx.beginPath(); ctx.arc(px, py, 4, 0, Math.PI*2); ctx.fillStyle = 'rgba(99,211,178,0.9)'; ctx.fill();
-      ctx.beginPath(); ctx.arc(px, py, 9, 0, Math.PI*2); ctx.fillStyle = 'rgba(99,211,178,0.18)'; ctx.fill();
+      const px = na.x * W + (nb.x * W - na.x * W) * pk.t;
+      const py = na.y * H + (nb.y * H - na.y * H) * pk.t;
+      ctx.beginPath(); ctx.arc(px, py, 4, 0, Math.PI * 2); ctx.fillStyle = 'rgba(99,211,178,0.9)'; ctx.fill();
+      ctx.beginPath(); ctx.arc(px, py, 9, 0, Math.PI * 2); ctx.fillStyle = 'rgba(99,211,178,0.18)'; ctx.fill();
       pk.t += pk.spd; if (pk.t > 1) pk.t = 0;
     });
     nodes.forEach(n => {
-      const nx = n.x*W, ny = n.y*H;
-      const pulse = 1 + Math.sin(fr*0.04)*0.05;
-      ctx.beginPath(); ctx.arc(nx, ny, 20*pulse, 0, Math.PI*2); ctx.fillStyle = n.c+'18'; ctx.fill();
-      ctx.beginPath(); ctx.arc(nx, ny, 16, 0, Math.PI*2); ctx.fillStyle = '#12121e'; ctx.fill();
-      ctx.strokeStyle = n.c+'66'; ctx.lineWidth = 1; ctx.stroke();
+      const nx = n.x * W, ny = n.y * H;
+      const pulse = 1 + Math.sin(fr * 0.04) * 0.05;
+      ctx.beginPath(); ctx.arc(nx, ny, 20 * pulse, 0, Math.PI * 2); ctx.fillStyle = n.c + '18'; ctx.fill();
+      ctx.beginPath(); ctx.arc(nx, ny, 16, 0, Math.PI * 2); ctx.fillStyle = '#12121e'; ctx.fill();
+      ctx.strokeStyle = n.c + '66'; ctx.lineWidth = 1; ctx.stroke();
       ctx.font = '12px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(n.icon, nx, ny);
-      ctx.font = 'bold 8px sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.fillText(n.l, nx, ny+26);
+      ctx.font = 'bold 8px sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.fillText(n.l, nx, ny + 26);
     });
     fr++; requestAnimationFrame(draw);
   }
@@ -225,15 +180,17 @@ const ring = document.getElementById('cursor-ring');
 let mx = 0, my = 0, rx = 0, ry = 0;
 document.addEventListener('mousemove', e => {
   mx = e.clientX; my = e.clientY;
-  if (cur) { cur.style.left = mx+'px'; cur.style.top = my+'px'; }
+  if (cur) { cur.style.left = mx + 'px'; cur.style.top = my + 'px'; }
 });
 (function animRing() {
-  rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
-  if (ring) { ring.style.left = rx+'px'; ring.style.top = ry+'px'; }
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  if (ring) { ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; }
   requestAnimationFrame(animRing);
 })();
 
-/* ===== FORMULAIRE — EmailJS + Google Sheets ===== */
+/* =====================================================
+   FORMULAIRE — Envoi vers le backend Node.js
+   ===================================================== */
 async function handleSubmit(e) {
   e.preventDefault();
   const btn = e.target;
@@ -242,98 +199,68 @@ async function handleSubmit(e) {
   const email   = (document.getElementById('f-email')?.value || '').trim();
   const service = document.getElementById('f-service')?.value || '';
   const message = (document.getElementById('f-message')?.value || '').trim();
-  const date    = new Date().toLocaleString('fr-FR');
 
+  // Validation côté client
   if (!name || !email || !message) {
-    showToast('Merci de remplir tous les champs obligatoires.', 'error');
-    return;
+    showToast('Merci de remplir tous les champs obligatoires.', 'error'); return;
   }
   if (!/\S+@\S+\.\S+/.test(email)) {
-    showToast('Adresse email invalide.', 'error');
-    return;
+    showToast('Adresse email invalide.', 'error'); return;
   }
 
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Envoi en cours...';
-  btn.disabled = true;
-  btn.style.opacity = '0.7';
+  btn.disabled = true; btn.style.opacity = '0.7';
 
   try {
-    // 1. Envoi email via EmailJS
-    await emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID,
-      { from_name: name, from_email: email, service: service || 'Non précisé', message, date },
-      EMAILJS_PUBLIC_KEY
-    );
-
-    // 2. Sauvegarde dans Google Sheets
-    await fetch(SHEETS_WEBHOOK_URL, {
+    const response = await fetch(`${API_URL}/api/contact`, {
       method: 'POST',
-      mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ date, name, email, service: service || 'Non précisé', message })
+      body: JSON.stringify({ name, email, service: service || 'Non précisé', message })
     });
 
-    // Succès
-    btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i>Envoyé ✓';
-    btn.style.opacity = '1';
-    btn.style.background = '#22c55e';
-    showToast('Message envoyé ! Je vous réponds sous 24h.', 'success');
+    const data = await response.json();
 
-    // Reset formulaire
-    ['f-name','f-email','f-service','f-message'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.value = '';
-    });
-
-    setTimeout(() => {
-      btn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i>Send message →';
-      btn.style.background = '';
-      btn.disabled = false;
-    }, 4000);
-
+    if (response.ok && data.success) {
+      btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i>Envoyé ✓';
+      btn.style.opacity = '1'; btn.style.background = '#22c55e';
+      showToast('Message envoyé ! Réponse sous 24h. Un email de confirmation vous a été envoyé.', 'success');
+      ['f-name','f-email','f-service','f-message'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i>Send message →';
+        btn.style.background = ''; btn.disabled = false;
+      }, 5000);
+    } else {
+      throw new Error(data.message || 'Erreur serveur');
+    }
   } catch (err) {
-    console.error('Erreur envoi formulaire:', err);
+    console.error('Erreur formulaire:', err);
+    const msg = err.message.includes('fetch') || err.message.includes('Failed')
+      ? 'Serveur inaccessible. Contactez-moi directement par email.'
+      : err.message;
     btn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i>Send message →';
-    btn.disabled = false;
-    btn.style.opacity = '1';
-    showToast('Erreur lors de l\'envoi. Contactez-moi directement par email.', 'error');
+    btn.disabled = false; btn.style.opacity = '1';
+    showToast(msg, 'error');
   }
 }
 
-/* ===== TOAST NOTIFICATION ===== */
+/* ===== TOAST ===== */
 function showToast(msg, type) {
   const old = document.getElementById('form-toast');
   if (old) old.remove();
-
   const t = document.createElement('div');
   t.id = 'form-toast';
-  t.innerHTML = (type === 'success'
-    ? '<i class="fa-solid fa-circle-check mr-2"></i>'
-    : '<i class="fa-solid fa-triangle-exclamation mr-2"></i>') + msg;
-
+  t.innerHTML = (type === 'success' ? '<i class="fa-solid fa-circle-check mr-2"></i>' : '<i class="fa-solid fa-triangle-exclamation mr-2"></i>') + msg;
   t.style.cssText = `
-    position:fixed; bottom:2rem; left:50%;
+    position:fixed;bottom:2rem;left:50%;
     transform:translateX(-50%) translateY(20px);
     background:${type === 'success' ? '#22c55e' : '#ef4444'};
-    color:#fff; padding:0.85rem 1.5rem; border-radius:100px;
-    font-size:0.88rem; font-weight:600;
-    font-family:'Instrument Sans',sans-serif;
-    z-index:10000; opacity:0;
-    transition:opacity 0.3s, transform 0.3s;
-    max-width:90vw; text-align:center;
-    box-shadow:0 8px 30px rgba(0,0,0,0.35);
-    display:flex; align-items:center;
+    color:#fff;padding:0.85rem 1.5rem;border-radius:100px;
+    font-size:0.88rem;font-weight:600;font-family:'Instrument Sans',sans-serif;
+    z-index:10000;opacity:0;transition:opacity 0.3s,transform 0.3s;
+    max-width:90vw;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,0.35);
+    display:flex;align-items:center;gap:8px;white-space:nowrap;
   `;
   document.body.appendChild(t);
-
-  requestAnimationFrame(() => {
-    t.style.opacity = '1';
-    t.style.transform = 'translateX(-50%) translateY(0)';
-  });
-  setTimeout(() => {
-    t.style.opacity = '0';
-    t.style.transform = 'translateX(-50%) translateY(20px)';
-    setTimeout(() => t.remove(), 400);
-  }, 5000);
+  requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)'; });
+  setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(20px)'; setTimeout(() => t.remove(), 400); }, 5500);
 }
