@@ -7,7 +7,7 @@
    En local pour tester : 'http://localhost:3000'
    En production        : 'https://ton-app.up.railway.app'
    ===================================================== */
-const API_URL = 'http://localhost:3000';
+const API_URL = '/api/contact';
 
 /* ===== THEME ===== */
 let currentTheme = 'dark';
