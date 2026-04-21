@@ -1,13 +1,9 @@
 /* =====================================================
-   ⚙️  CONFIGURATION — UNE SEULE LIGNE À MODIFIER
+   ⚙️  METS TON URL VERCEL ICI APRÈS DÉPLOIEMENT
    ─────────────────────────────────────────────────
-   Après avoir déployé ton backend sur Railway,
-   remplace l'URL ci-dessous par ton URL Railway.
-
-   En local pour tester : 'http://localhost:3000'
-   En production        : 'https://ton-app.up.railway.app'
+   Exemple : 'https://portfolio-backend-samuel.vercel.app'
    ===================================================== */
-const API_URL = '';
+const API_URL = ''; // Vercel API Routes — pas besoin d'URL externe !
 
 /* ===== THEME ===== */
 let currentTheme = 'dark';
@@ -32,13 +28,14 @@ function openCvModal() {
   document.body.style.overflow = 'hidden';
 }
 function closeCvModal(e) {
-  // Ferme si clic sur le fond ou sur le bouton fermer
   if (!e || e.target.id === 'cv-modal') {
     document.getElementById('cv-modal').classList.add('hidden');
     document.body.style.overflow = '';
   }
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCvModal({ target: document.getElementById('cv-modal') }); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeCvModal({ target: document.getElementById('cv-modal') });
+});
 
 /* ===== NAV MOBILE ===== */
 function toggleMenu() {
@@ -94,12 +91,18 @@ updateClock();
     ctx.strokeStyle = 'rgba(99,211,178,0.05)'; ctx.lineWidth = 0.5;
     for (let la = -60; la <= 60; la += 30) {
       ctx.beginPath(); let f = true;
-      for (let lo = 0; lo <= 360; lo += 3) { const p = p2xy(la, lo, angle); if (p.v) { if (f) { ctx.moveTo(p.x, p.y); f = false; } else ctx.lineTo(p.x, p.y); } else f = true; }
+      for (let lo = 0; lo <= 360; lo += 3) {
+        const p = p2xy(la, lo, angle);
+        if (p.v) { if (f) { ctx.moveTo(p.x, p.y); f = false; } else ctx.lineTo(p.x, p.y); } else f = true;
+      }
       ctx.stroke();
     }
     for (let lo = 0; lo < 360; lo += 30) {
       ctx.beginPath(); let f = true;
-      for (let la = -85; la <= 85; la += 3) { const p = p2xy(la, lo, angle); if (p.v) { if (f) { ctx.moveTo(p.x, p.y); f = false; } else ctx.lineTo(p.x, p.y); } else f = true; }
+      for (let la = -85; la <= 85; la += 3) {
+        const p = p2xy(la, lo, angle);
+        if (p.v) { if (f) { ctx.moveTo(p.x, p.y); f = false; } else ctx.lineTo(p.x, p.y); } else f = true;
+      }
       ctx.stroke();
     }
     dots.forEach(([la, lo]) => {
@@ -200,7 +203,6 @@ async function handleSubmit(e) {
   const service = document.getElementById('f-service')?.value || '';
   const message = (document.getElementById('f-message')?.value || '').trim();
 
-  // Validation côté client
   if (!name || !email || !message) {
     showToast('Merci de remplir tous les champs obligatoires.', 'error'); return;
   }
@@ -223,8 +225,10 @@ async function handleSubmit(e) {
     if (response.ok && data.success) {
       btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i>Envoyé ✓';
       btn.style.opacity = '1'; btn.style.background = '#22c55e';
-      showToast('Message envoyé ! Réponse sous 24h. Un email de confirmation vous a été envoyé.', 'success');
-      ['f-name','f-email','f-service','f-message'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      showToast('Message envoyé ! Réponse sous 24h.', 'success');
+      ['f-name','f-email','f-service','f-message'].forEach(id => {
+        const el = document.getElementById(id); if (el) el.value = '';
+      });
       setTimeout(() => {
         btn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i>Send message →';
         btn.style.background = ''; btn.disabled = false;
@@ -235,7 +239,7 @@ async function handleSubmit(e) {
   } catch (err) {
     console.error('Erreur formulaire:', err);
     const msg = err.message.includes('fetch') || err.message.includes('Failed')
-      ? 'Serveur inaccessible. Contactez-moi directement par email.'
+      ? 'Serveur inaccessible. Contactez-moi par email directement.'
       : err.message;
     btn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i>Send message →';
     btn.disabled = false; btn.style.opacity = '1';
@@ -249,7 +253,9 @@ function showToast(msg, type) {
   if (old) old.remove();
   const t = document.createElement('div');
   t.id = 'form-toast';
-  t.innerHTML = (type === 'success' ? '<i class="fa-solid fa-circle-check mr-2"></i>' : '<i class="fa-solid fa-triangle-exclamation mr-2"></i>') + msg;
+  t.innerHTML = (type === 'success'
+    ? '<i class="fa-solid fa-circle-check mr-2"></i>'
+    : '<i class="fa-solid fa-triangle-exclamation mr-2"></i>') + msg;
   t.style.cssText = `
     position:fixed;bottom:2rem;left:50%;
     transform:translateX(-50%) translateY(20px);
@@ -258,9 +264,14 @@ function showToast(msg, type) {
     font-size:0.88rem;font-weight:600;font-family:'Instrument Sans',sans-serif;
     z-index:10000;opacity:0;transition:opacity 0.3s,transform 0.3s;
     max-width:90vw;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,0.35);
-    display:flex;align-items:center;gap:8px;white-space:nowrap;
+    display:flex;align-items:center;gap:8px;
   `;
   document.body.appendChild(t);
-  requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)'; });
-  setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(20px)'; setTimeout(() => t.remove(), 400); }, 5500);
+  requestAnimationFrame(() => {
+    t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)';
+  });
+  setTimeout(() => {
+    t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(20px)';
+    setTimeout(() => t.remove(), 400);
+  }, 5500);
 }

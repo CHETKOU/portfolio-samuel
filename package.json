@@ -1,0 +1,8 @@
+{
+  "name": "portfolio-samuel",
+  "version": "1.0.0",
+  "dependencies": {
+    "mongoose": "^9.5.0",
+    "nodemailer": "^8.0.5"
+  }
+}
