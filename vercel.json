@@ -1,5 +1,32 @@
 {
+  "version": 2,
+  "name": "portfolio-samuel",
+  "builds": [
+    {
+      "src": "backend/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "style.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "script.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "images/**",
+      "use": "@vercel/static"
+    }
+  ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/backend/server.js" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/backend/server.js"
+    }
   ]
 }
